@@ -1,0 +1,135 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"-->
+<!--                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-->
+<!--                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">-->
+
+<!--    &lt;!&ndash; Create students table &ndash;&gt;-->
+<!--    <changeSet id="002-01" author="admin" context="tenant">-->
+<!--        <createTable tableName="students">-->
+<!--            <column name="student_id" type="UUID">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="name" type="VARCHAR(255)"/>-->
+<!--            <column name="date_of_birth" type="DATE"/>-->
+<!--            <column name="parent_id" type="UUID">-->
+<!--                <constraints foreignKeyName="fk_students_parent" references="users(user_id)"/>-->
+<!--            </column>-->
+<!--            <column name="class_id" type="UUID">-->
+<!--                <constraints foreignKeyName="fk_students_class" references="classes(class_id)"/>-->
+<!--            </column>-->
+<!--            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>-->
+<!--            <column name="updated_at" type="TIMESTAMP"/>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
+
+<!--    &lt;!&ndash; Create staff table &ndash;&gt;-->
+<!--    <changeSet id="002-02" author="admin" context="tenant">-->
+<!--        <createTable tableName="staff">-->
+<!--            <column name="staff_id" type="UUID">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="name" type="VARCHAR(255)"/>-->
+<!--            <column name="role" type="VARCHAR(20) CHECK (role IN ('TEACHER', 'ADMIN'))"/>-->
+<!--            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>-->
+<!--            <column name="updated_at" type="TIMESTAMP"/>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
+
+<!--    &lt;!&ndash; Create classes table &ndash;&gt;-->
+<!--    <changeSet id="002-03" author="admin" context="tenant">-->
+<!--        <createTable tableName="classes">-->
+<!--            <column name="class_id" type="UUID">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="name" type="VARCHAR(255)"/>-->
+<!--            <column name="teacher_id" type="UUID">-->
+<!--                <constraints foreignKeyName="fk_classes_teacher" references="staff(staff_id)"/>-->
+<!--            </column>-->
+<!--            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>-->
+<!--            <column name="updated_at" type="TIMESTAMP"/>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
+
+<!--    &lt;!&ndash; Create courses table &ndash;&gt;-->
+<!--    <changeSet id="002-04" author="admin" context="tenant">-->
+<!--        <createTable tableName="courses">-->
+<!--            <column name="course_id" type="UUID">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="name" type="VARCHAR(255)"/>-->
+<!--            <column name="class_id" type="UUID">-->
+<!--                <constraints foreignKeyName="fk_courses_class" references="classes(class_id)"/>-->
+<!--            </column>-->
+<!--            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>-->
+<!--            <column name="updated_at" type="TIMESTAMP"/>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
+
+<!--    &lt;!&ndash; Create exams table &ndash;&gt;-->
+<!--    <changeSet id="002-05" author="admin" context="tenant">-->
+<!--        <createTable tableName="exams">-->
+<!--            <column name="exam_id" type="UUID">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="name" type="VARCHAR(255)"/>-->
+<!--            <column name="course_id" type="UUID">-->
+<!--                <constraints foreignKeyName="fk_exams_course" references="courses(course_id)"/>-->
+<!--            </column>-->
+<!--            <column name="date" type="DATE"/>-->
+<!--            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>-->
+<!--            <column name="updated_at" type="TIMESTAMP"/>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
+
+<!--    &lt;!&ndash; Create grades table &ndash;&gt;-->
+<!--    <changeSet id="002-06" author="admin" context="tenant">-->
+<!--        <createTable tableName="grades">-->
+<!--            <column name="grade_id" type="UUID">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="student_id" type="UUID">-->
+<!--                <constraints foreignKeyName="fk_grades_student" references="students(student_id)"/>-->
+<!--            </column>-->
+<!--            <column name="exam_id" type="UUID">-->
+<!--                <constraints foreignKeyName="fk_grades_exam" references="exams(exam_id)"/>-->
+<!--            </column>-->
+<!--            <column name="grade" type="VARCHAR(5)"/>-->
+<!--            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>-->
+<!--            <column name="updated_at" type="TIMESTAMP"/>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
+
+<!--    &lt;!&ndash; Create attendances table &ndash;&gt;-->
+<!--    <changeSet id="002-07" author="admin" context="tenant">-->
+<!--        <createTable tableName="attendances">-->
+<!--            <column name="attendance_id" type="UUID">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="student_id" type="UUID">-->
+<!--                <constraints foreignKeyName="fk_attendance_student" references="students(student_id)"/>-->
+<!--            </column>-->
+<!--            <column name="date" type="DATE"/>-->
+<!--            <column name="status" type="VARCHAR(10) CHECK (status IN ('PRESENT', 'ABSENT', 'LATE'))"/>-->
+<!--            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>-->
+<!--            <column name="updated_at" type="TIMESTAMP"/>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
+
+<!--    &lt;!&ndash; Create notifications table &ndash;&gt;-->
+<!--    <changeSet id="002-08" author="admin" context="tenant">-->
+<!--        <createTable tableName="notifications">-->
+<!--            <column name="notification_id" type="UUID">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="user_id" type="UUID">-->
+<!--                <constraints foreignKeyName="fk_notifications_user" references="users(user_id)"/>-->
+<!--            </column>-->
+<!--            <column name="message" type="TEXT"/>-->
+<!--            <column name="status" type="VARCHAR(10) CHECK (status IN ('SENT', 'PENDING', 'FAILED'))"/>-->
+<!--            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>-->
+<!--            <column name="updated_at" type="TIMESTAMP"/>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
+
+<!--</databaseChangeLog>-->

@@ -1,0 +1,15 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"-->
+<!--                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-->
+<!--                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">-->
+
+<!--    <changeSet id="003-01" author="admin">-->
+<!--        <addUniqueConstraint tableName="users" columnNames="email, tenant_id" constraintName="unique_user_email_tenant"/>-->
+<!--    </changeSet>-->
+
+<!--    <changeSet id="003-02" author="admin">-->
+<!--        <createIndex tableName="students" indexName="idx_students_class" columns="class_id"/>-->
+<!--    </changeSet>-->
+
+<!--</databaseChangeLog>-->

@@ -1,5 +1,6 @@
 package com.sms.multitenantschool.security;
 
+import com.sms.multitenantschool.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,11 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
     private final String jwtSecret = generateSecretKey();
+    private final UserRepository userRepository;
+
+    public JwtTokenProvider(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     private Key key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
@@ -62,6 +68,10 @@ public class JwtTokenProvider {
         long jwtExpirationDate = 3600000;
         Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
 
+        // Retrieve user details from the database
+        var user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         // Extract roles from the Authentication object
         List<String> roles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority) // Get the authority (e.g., "ROLE_ADMIN")
@@ -71,7 +81,8 @@ public class JwtTokenProvider {
                 .subject(username)
                 .issuedAt(currentDate)
                 .expiration(expireDate)
-                .claim("roles", roles) // Add roles to the token
+                .claim("roles", roles)
+                .claim("tenant_uuid", user.getTenantUuid())
                 .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();
     }

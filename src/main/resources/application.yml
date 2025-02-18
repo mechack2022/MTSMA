@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/multi-tenant-school
+    url: jdbc:postgresql://localhost:5432/mtsmadb
     username: postgres
     password: mechack200
     driver-class-name: org.postgresql.Driver
@@ -20,5 +20,14 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html
+#liquibase:
+#  change-log: classpath:db/db.changelog/db.changelog-master.xml
+#  enabled: true
+#  default-schema: public
+#  drop-first: false
+#  contexts: development
 
+#logging:
+#  level:
+#    liquibase: INFO
 

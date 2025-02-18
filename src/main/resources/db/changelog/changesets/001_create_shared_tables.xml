@@ -1,0 +1,100 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"-->
+<!--                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-->
+<!--                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">-->
+
+<!--    &lt;!&ndash; Create tenants table &ndash;&gt;-->
+<!--    <changeSet id="001-01" author="admin">-->
+<!--        <createTable tableName="tenants" schemaName="public">-->
+<!--            &lt;!&ndash; Auto-incrementing ID &ndash;&gt;-->
+<!--            <column name="id" type="BIGSERIAL">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            &lt;!&ndash; UUID as unique identifier &ndash;&gt;-->
+<!--            <column name="tenant_uuid" type="UUID">-->
+<!--                <constraints nullable="false" unique="true"/>-->
+<!--            </column>-->
+
+<!--            <column name="name" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false" unique="true"/>-->
+<!--            </column>-->
+<!--            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>-->
+<!--            <column name="updated_at" type="TIMESTAMP"/>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
+
+
+<!--    &lt;!&ndash; Create users table &ndash;&gt;-->
+<!--    <changeSet id="001-02" author="admin">-->
+<!--        <createTable tableName="users" schemaName="public">-->
+<!--            <column name="id" type="BIGSERIAL">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="user_uuid" type="UUID">-->
+<!--                <constraints nullable="false" unique="true"/>-->
+<!--            </column>-->
+<!--            <column name="tenant_id" type="UUID">-->
+<!--                <constraints nullable="false" foreignKeyName="fk_users_tenant"-->
+<!--                             references="tenants(tenant_id)"/>-->
+<!--            </column>-->
+<!--            <column name="name" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="username" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false" unique="true"/>-->
+<!--            </column>-->
+<!--            <column name="email" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false" unique="true"/>-->
+<!--            </column>-->
+<!--            <column name="password" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>-->
+<!--            <column name="updated_at" type="TIMESTAMP"/>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
+
+
+<!--    <changeSet id="001-03" author="admin">-->
+<!--        &lt;!&ndash; Create roles table &ndash;&gt;-->
+<!--        <createTable tableName="roles" schemaName="public">-->
+<!--            <column name="id" type="BIGSERIAL">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="name" type="VARCHAR(50)">-->
+<!--                <constraints nullable="false" unique="true"/>-->
+<!--            </column>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
+
+
+<!--    <changeSet id="001-04" author="admin">-->
+<!--        &lt;!&ndash; Create users_roles many-to-many relationship table &ndash;&gt;-->
+<!--        <createTable tableName="users_roles" schemaName="public">-->
+<!--            <column name="user_id" type="BIGINT">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="role_id" type="BIGINT">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--        </createTable>-->
+<!--        &lt;!&ndash; Add primary key constraint &ndash;&gt;-->
+<!--        <addPrimaryKey tableName="users_roles" columnNames="user_id, role_id" constraintName="pk_users_roles"/>-->
+
+<!--        &lt;!&ndash; Add foreign key constraints &ndash;&gt;-->
+<!--        <addForeignKeyConstraint baseTableName="users_roles"-->
+<!--                                 baseColumnNames="user_id"-->
+<!--                                 referencedTableName="users"-->
+<!--                                 referencedColumnNames="id"-->
+<!--                                 constraintName="fk_users_roles_user"/>-->
+
+<!--        <addForeignKeyConstraint baseTableName="users_roles"-->
+<!--                                 baseColumnNames="role_id"-->
+<!--                                 referencedTableName="roles"-->
+<!--                                 referencedColumnNames="id"-->
+<!--                                 constraintName="fk_users_roles_role"/>-->
+<!--    </changeSet>-->
+
+
+<!--</databaseChangeLog>-->
