@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
@@ -48,4 +47,9 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/testing")
+    public ResponseEntity<?> testingComm() {
+        String response = "We are connected";
+        return ResponseEntity.ok(response);
+    }
 }
