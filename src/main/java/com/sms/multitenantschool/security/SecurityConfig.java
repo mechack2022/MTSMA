@@ -34,11 +34,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> {
                     authorize.requestMatchers("/api/auth/**").permitAll();
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-                    authorize.requestMatchers("/swagger-ui/**").permitAll();
-                    authorize.requestMatchers("/v3/api-docs/**").permitAll();
-                    authorize.requestMatchers("/swagger-ui.html").permitAll();
-                    authorize.requestMatchers("/api-docs/**").permitAll();
-                    authorize.requestMatchers("/swagger-resources/**").permitAll();
+//                    authorize.requestMatchers("/swagger-ui/**").permitAll();
+//                    authorize.requestMatchers("/v3/api-docs/**").permitAll();
+//                    authorize.requestMatchers("/swagger-ui.html").permitAll();
+//                    authorize.requestMatchers("/api-docs/**").permitAll();
+//                    authorize.requestMatchers("/swagger-resources/**").permitAll();
                     authorize.requestMatchers("/configuration/**").permitAll();
                     authorize.requestMatchers("/webjars/**").permitAll();
                     authorize.requestMatchers("/api/admin/**").hasRole("ADMIN"); // Restrict to ADMIN

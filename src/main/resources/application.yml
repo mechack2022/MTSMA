@@ -15,11 +15,20 @@ spring:
 jwt:
   secret: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
   expiration: 86400000
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    path: /swagger-ui.html
+#springdoc:
+#  api-docs:
+#    path: /api-docs
+#  swagger-ui:
+#    path: /swagger-ui.html
+# Enable debug mode
+debug: true
+# Set logging level for different packages (optional)
+logging:
+  level:
+    root: INFO
+    org.springframework: DEBUG
+    com.sms.multitenantschool: DEBUG
+
 #liquibase:
 #  change-log: classpath:db/db.changelog/db.changelog-master.xml
 #  enabled: true
