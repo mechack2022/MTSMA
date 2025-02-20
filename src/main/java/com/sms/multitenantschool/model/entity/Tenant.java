@@ -8,8 +8,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tenants", schema = "public")
-@Getter
-@Setter
+
 public class Tenant {
 
     @Id
@@ -27,6 +26,46 @@ public class Tenant {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getTenantName() {
+        return tenantName;
+    }
+
+    public void setTenantName(String tenantName) {
+        this.tenantName = tenantName;
+    }
+
+    public UUID getTenantUuid() {
+        return tenantUuid;
+    }
+
+    public void setTenantUuid(UUID tenantUuid) {
+        this.tenantUuid = tenantUuid;
+    }
 
     @PrePersist
     protected void onCreate() {

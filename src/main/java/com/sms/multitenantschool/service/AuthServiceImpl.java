@@ -106,7 +106,6 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 //        send email
         emailService.sendVerificationEmail(user.getEmail(), verificationToken);
-
         return "Tenant account created. Please verify your email.";
     }
 
