@@ -1,14 +1,16 @@
 package com.sms.multitenantschool.model.entity;
 
+import com.sms.multitenantschool.converter.TenantSettingsConverter;
+import org.hibernate.annotations.JdbcTypeCode;
 import jakarta.persistence.*;
-        import lombok.Getter;
-import lombok.Setter;
+import org.hibernate.type.SqlTypes;
+
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "tenants", schema = "public")
-
 public class Tenant {
 
     @Id
@@ -21,11 +23,24 @@ public class Tenant {
     @Column(name = "tenant_name", nullable = false, unique = true)
     private String tenantName;
 
+    @Convert(converter = TenantSettingsConverter.class) // Use the custom converter
+    @JdbcTypeCode(SqlTypes.JSON) // Explicitly specify JSONB type
+    @Column(name = "tenant_settings", columnDefinition = "jsonb")
+    private TenantSettings settings;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public TenantSettings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(TenantSettings settings) {
+        this.settings = settings;
+    }
 
     public Long getId() {
         return id;

@@ -48,7 +48,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation Error")
     public ResponseEntity<ApiResponse<Map<String, String>>> handleMethodArgsNotValidException(MethodArgumentNotValidException ex) {
         Map<String, String> validationErrors = new HashMap<>();
 
