@@ -28,6 +28,17 @@ public abstract class BaseEntity {
         return createdAt;
     }
 
+    @Column(name = "archived", nullable = false)
+    private Integer archived = 0;
+
+    public Integer getArchived() {
+        return archived;
+    }
+
+    public void setArchived(Integer archived) {
+        this.archived = archived;
+    }
+
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }

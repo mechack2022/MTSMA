@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/mtsmadb1
+    url: jdbc:postgresql://localhost:5432/mtsmadb2
     username: postgres
     password: mechack200
     driver-class-name: org.postgresql.Driver

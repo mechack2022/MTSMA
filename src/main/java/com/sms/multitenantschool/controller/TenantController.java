@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/tenant")
 public class TenantController {
 
-   private final TenantService tenantService;
+    private final TenantService tenantService;
 
-   public  TenantController(TenantService tenantService){
-       this.tenantService = tenantService ;
-   }
+    public TenantController(TenantService tenantService) {
+        this.tenantService = tenantService;
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/add-settings", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -27,6 +27,28 @@ public class TenantController {
 
         try {
             TenantSettings updatedSettings = tenantService.addTenantSetting(settings, tenantUuid);
+            return ResponseEntity.ok(new ApiResponse<>(updatedSettings, "Tenant settings updated successfully."));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new ApiResponse<>(
+                    null,
+                    "Invalid input: " + e.getMessage()
+            ));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(
+                    null,
+                    "Failed to update tenant settings: " + e.getMessage()
+            ));
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping(value = "/update-settings", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse<TenantSettings>> updateTenantSettings(
+            @RequestParam Long tenantId,
+            @RequestBody TenantSettings settings) {
+
+        try {
+            TenantSettings updatedSettings = tenantService.updateTenantSettings(tenantId, settings);
             return ResponseEntity.ok(new ApiResponse<>(updatedSettings, "Tenant settings updated successfully."));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new ApiResponse<>(
