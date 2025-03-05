@@ -1,10 +1,10 @@
 package com.sms.multitenantschool.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sms.multitenantschool.Utils.ValidationUtils;
 import com.sms.multitenantschool.model.DTO.ApiResponse;
 import com.sms.multitenantschool.model.DTO.StaffRequestDTO;
 import com.sms.multitenantschool.model.DTO.StaffResponseDTO;
-import com.sms.multitenantschool.service.StaffService;
 import com.sms.multitenantschool.service.serviceImpl.StaffServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -23,9 +23,11 @@ import java.io.IOException;
 public class StaffController {
 
     private final StaffServiceImpl staffService;
+    private final ValidationUtils validationUtils;
 
-    public StaffController(StaffServiceImpl staffService) {
+    public StaffController(StaffServiceImpl staffService, ValidationUtils validationUtils) {
         this.staffService = staffService;
+        this.validationUtils = validationUtils;
     }
 
 //    @PreAuthorize("hasRole('ADMIN')")
@@ -60,6 +62,8 @@ public class StaffController {
         if (imageFile != null) {
             staffRequestDto.setImageFile(imageFile);
         }
+        // Validate using the utility class
+        validationUtils.validate(staffRequestDto);
         StaffResponseDTO createdStaff = staffService.createStaff(tenantId, staffRequestDto);
         return ResponseEntity.ok(new ApiResponse<>(createdStaff, "Staff created successfully"));
     }

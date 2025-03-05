@@ -10,7 +10,6 @@ import com.sms.multitenantschool.model.entity.Tenant;
 import com.sms.multitenantschool.repository.StaffRepository;
 import com.sms.multitenantschool.repository.TenantRepository;
 import com.sms.multitenantschool.service.FileService;
-import com.sms.multitenantschool.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
