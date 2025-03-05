@@ -28,7 +28,6 @@ logging:
     root: INFO
     org.springframework: DEBUG
     com.sms.multitenantschool: DEBUG
-
 #liquibase:
 #  change-log: classpath:db/db.changelog/db.changelog-master.xml
 #  enabled: true
@@ -39,4 +38,5 @@ logging:
 #logging:
 #  level:
 #    liquibase: INFO
+
 

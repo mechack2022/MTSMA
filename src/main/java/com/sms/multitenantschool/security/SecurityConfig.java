@@ -42,7 +42,9 @@ public class SecurityConfig {
                     authorize.requestMatchers("/configuration/**").permitAll();
                     authorize.requestMatchers("/webjars/**").permitAll();
                     authorize.requestMatchers("/api/admin/**").hasRole("ADMIN"); // Restrict to ADMIN
-                    authorize.requestMatchers("/api/user/**").hasRole("USER");  // Restrict to USER
+                    authorize.requestMatchers("/api/user/**").hasRole("USER");
+                    authorize.requestMatchers("/api/staff/**").hasRole("ADMIN");
+                    authorize.requestMatchers("/actuator/**").permitAll();// Restrict to USER
                     authorize.anyRequest().authenticated();
                 }).httpBasic(Customizer.withDefaults());
         http.exceptionHandling(exception -> exception

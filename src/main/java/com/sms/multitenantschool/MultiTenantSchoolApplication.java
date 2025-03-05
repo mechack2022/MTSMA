@@ -10,6 +10,4 @@ public class MultiTenantSchoolApplication {
         System.out.println("Welcome to Tenants");
         SpringApplication.run(MultiTenantSchoolApplication.class, args);
     }
-//   System.out.println("Welcome muiti tenants school");
-
 }
