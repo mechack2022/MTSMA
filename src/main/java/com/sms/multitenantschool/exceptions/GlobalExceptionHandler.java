@@ -1,6 +1,7 @@
 package com.sms.multitenantschool.exceptions;
 
 import com.sms.multitenantschool.model.DTO.ApiResponse;
+import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -46,16 +47,24 @@ public class GlobalExceptionHandler {
                 ));
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
     @ResponseBody
-    public ResponseEntity<ApiResponse<Map<String, String>>> handleMethodArgsNotValidException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationExceptions(Exception ex) {
         Map<String, String> validationErrors = new HashMap<>();
 
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError)error).getField();
-            String message = error.getDefaultMessage();
-            validationErrors.put(fieldName, message);
-        });
+        if (ex instanceof MethodArgumentNotValidException methodArgumentNotValidException) {
+            methodArgumentNotValidException.getBindingResult().getAllErrors().forEach((error) -> {
+                String fieldName = ((FieldError) error).getField();
+                String message = error.getDefaultMessage();
+                validationErrors.put(fieldName, message);
+            });
+        } else if (ex instanceof ConstraintViolationException constraintViolationException) {
+            constraintViolationException.getConstraintViolations().forEach(violation -> {
+                String fieldName = violation.getPropertyPath().toString();
+                String message = violation.getMessage();
+                validationErrors.put(fieldName, message);
+            });
+        }
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -66,6 +75,7 @@ public class GlobalExceptionHandler {
                         "Invalid input provided"
                 ));
     }
+
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseBody

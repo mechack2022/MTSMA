@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/mtsmadb
+    url: jdbc:postgresql://localhost:5432/mtsmadb2
     username: postgres
     password: mechack200
     driver-class-name: org.postgresql.Driver
@@ -28,7 +28,6 @@ logging:
     root: INFO
     org.springframework: DEBUG
     com.sms.multitenantschool: DEBUG
-
 #liquibase:
 #  change-log: classpath:db/db.changelog/db.changelog-master.xml
 #  enabled: true
@@ -39,4 +38,5 @@ logging:
 #logging:
 #  level:
 #    liquibase: INFO
+
 
