@@ -24,28 +24,15 @@ public class StaffController {
 
     private final StaffServiceImpl staffService;
     private final ValidationUtils validationUtils;
+    private final ObjectMapper objectMapper;
+//    ObjectMapper objectMapper = new ObjectMapper();
 
-    public StaffController(StaffServiceImpl staffService, ValidationUtils validationUtils) {
+    public StaffController(StaffServiceImpl staffService, ValidationUtils validationUtils,ObjectMapper objectMapper) {
         this.staffService = staffService;
         this.validationUtils = validationUtils;
+        this.objectMapper = objectMapper;
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<ApiResponse<StaffResponseDTO>> createStaff(
-//            @RequestParam Long tenantId,
-//            @RequestPart("staff") @Valid StaffRequestDTO staffRequestDto,
-//            @RequestPart(value = "cvFile", required = false) MultipartFile cvFile,
-//            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
-//        if (cvFile != null) {
-//            staffRequestDto.setCvFile(cvFile);
-//        }
-//        if (imageFile != null) {
-//            staffRequestDto.setImageFile(imageFile);
-//        }
-//        StaffResponseDTO createdStaff = staffService.createStaff(tenantId, staffRequestDto);
-//        return ResponseEntity.ok(new ApiResponse<>(createdStaff, "Staff created successfully"));
-//    }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<StaffResponseDTO>> createStaff(
@@ -54,7 +41,7 @@ public class StaffController {
             @RequestPart(value = "cvFile", required = false) MultipartFile cvFile,
             @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
 
-        ObjectMapper objectMapper = new ObjectMapper();
+
         StaffRequestDTO staffRequestDto = objectMapper.readValue(staffJson, StaffRequestDTO.class);
         if (cvFile != null) {
             staffRequestDto.setCvFile(cvFile);
@@ -67,9 +54,6 @@ public class StaffController {
         StaffResponseDTO createdStaff = staffService.createStaff(tenantId, staffRequestDto);
         return ResponseEntity.ok(new ApiResponse<>(createdStaff, "Staff created successfully"));
     }
-
-
-
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/{staffId}/cv", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -113,5 +97,34 @@ public class StaffController {
                 .contentType(MediaType.parseMediaType(staffDto.getImageContentType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + staffDto.getImageFileName() + "\"")
                 .body(file);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping(value = "/{staffId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<StaffResponseDTO>> updateStaff(
+            @PathVariable Long staffId,
+            @RequestPart("staff") String staffJson,
+            @RequestPart(value = "cvFile", required = false) MultipartFile cvFile,
+            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
+
+        StaffRequestDTO staffRequestDto = objectMapper.readValue(staffJson, StaffRequestDTO.class);
+
+        if (cvFile != null) {
+            staffRequestDto.setCvFile(cvFile);
+        }
+        if (imageFile != null) {
+            staffRequestDto.setImageFile(imageFile);
+        }
+
+        StaffResponseDTO updatedStaff = staffService.updateStaff(staffId, staffRequestDto);
+        return ResponseEntity.ok(new ApiResponse<>(updatedStaff, "Staff updated successfully"));
+    }
+
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{staffId}")
+    public ResponseEntity<ApiResponse<String>> archiveStaff(@PathVariable Long staffId) {
+        String message = staffService.deleteStaff(staffId);
+        return ResponseEntity.ok(new ApiResponse<>(message, "Staff archived successfully"));
     }
 }

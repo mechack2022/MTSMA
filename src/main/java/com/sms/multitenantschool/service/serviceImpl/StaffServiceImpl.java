@@ -127,4 +127,62 @@ public class StaffServiceImpl {
                 .orElseThrow(() -> new ResourceNotFoundException("Staff", "id", staffId));
         return staffMapper.toResponseDto(staff);
     }
+
+    @Transactional
+    public StaffResponseDTO updateStaff(Long staffId, StaffRequestDTO staffRequestDto) throws IOException {
+        if (staffId == null || staffRequestDto == null) {
+            throw new IllegalArgumentException("Staff ID and staff details cannot be null");
+        }
+
+        Staff staff = staffRepository.findById(staffId)
+                .orElseThrow(() -> new ResourceNotFoundException("Staff", "id", staffId));
+
+        if (staff.getArchived() == 1) {
+            throw new IllegalStateException("Cannot modify archived staff");
+        }
+
+        //  Preserve the original email (DO NOT update it)
+        String existingEmail = staff.getEmail();
+
+        //  Update only allowed fields
+        staffMapper.updateEntityFromRequestDto(staff, staffRequestDto);
+        //  Restore the original email to prevent updates
+        staff.setEmail(existingEmail);
+        //  Handle CV upload if provided
+        if (staffRequestDto.getCvFile() != null && !staffRequestDto.getCvFile().isEmpty()) {
+            String cvFilePath = fileService.uploadFile(staffId.toString(), "staff", staffRequestDto.getCvFile());
+            staff.setCvFileName(staffRequestDto.getCvFile().getOriginalFilename());
+            staff.setCvContentType(staffRequestDto.getCvFile().getContentType());
+            staff.setCvFilePath(cvFilePath);
+        }
+
+        // ✅ Handle image upload if provided
+        if (staffRequestDto.getImageFile() != null && !staffRequestDto.getImageFile().isEmpty()) {
+            String imageFilePath = fileService.uploadFile(staffId.toString(), "staff-images", staffRequestDto.getImageFile());
+            staff.setImageFileName(staffRequestDto.getImageFile().getOriginalFilename());
+            staff.setImageContentType(staffRequestDto.getImageFile().getContentType());
+            staff.setImageFilePath(imageFilePath);
+        }
+
+        Staff updatedStaff = staffRepository.save(staff);
+        return staffMapper.toResponseDto(updatedStaff);
+    }
+
+    @Transactional
+    public String deleteStaff(Long staffId) {
+        if (staffId == null) {
+            throw new IllegalArgumentException("Staff ID cannot be null");
+        }
+        Staff staff = staffRepository.findById(staffId)
+                .orElseThrow(() -> new ResourceNotFoundException("Staff", "id", staffId));
+
+        if (staff.getArchived() == 1) {
+            throw new IllegalStateException("Staff is already archived");
+        }
+        staff.setArchived(1);
+        staffRepository.save(staff);
+        return "Staff archived successfully";
+    }
+
+
 }

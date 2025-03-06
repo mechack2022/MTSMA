@@ -51,7 +51,7 @@ public class StaffMapper {
         }
         staff.setFirstName(dto.getFirstName());
         staff.setLastName(dto.getLastName());
-        staff.setEmail(dto.getEmail());
+//        staff.setEmail(dto.getEmail());
         staff.setPhoneNumber(dto.getPhoneNumber());
         staff.setJobTitle(dto.getJobTitle());
     }
