@@ -3,8 +3,8 @@ package com.sms.multitenantschool.service.serviceImpl;
 import com.sms.multitenantschool.exceptions.BadRequestException;
 import com.sms.multitenantschool.exceptions.ResourceNotFoundException;
 import com.sms.multitenantschool.mapper.StaffMapper;
-import com.sms.multitenantschool.model.DTO.StaffRequestDTO;
-import com.sms.multitenantschool.model.DTO.StaffResponseDTO;
+import com.sms.multitenantschool.model.dto.StaffRequestDTO;
+import com.sms.multitenantschool.model.dto.StaffResponseDTO;
 import com.sms.multitenantschool.model.entity.Staff;
 import com.sms.multitenantschool.model.entity.Tenant;
 import com.sms.multitenantschool.repository.StaffRepository;
@@ -141,12 +141,8 @@ public class StaffServiceImpl {
             throw new IllegalStateException("Cannot modify archived staff");
         }
 
-        //  Preserve the original email (DO NOT update it)
         String existingEmail = staff.getEmail();
-
-        //  Update only allowed fields
         staffMapper.updateEntityFromRequestDto(staff, staffRequestDto);
-        //  Restore the original email to prevent updates
         staff.setEmail(existingEmail);
         //  Handle CV upload if provided
         if (staffRequestDto.getCvFile() != null && !staffRequestDto.getCvFile().isEmpty()) {
@@ -155,7 +151,6 @@ public class StaffServiceImpl {
             staff.setCvContentType(staffRequestDto.getCvFile().getContentType());
             staff.setCvFilePath(cvFilePath);
         }
-
         // ✅ Handle image upload if provided
         if (staffRequestDto.getImageFile() != null && !staffRequestDto.getImageFile().isEmpty()) {
             String imageFilePath = fileService.uploadFile(staffId.toString(), "staff-images", staffRequestDto.getImageFile());

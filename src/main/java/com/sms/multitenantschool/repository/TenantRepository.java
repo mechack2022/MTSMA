@@ -10,4 +10,5 @@ public interface TenantRepository extends JpaRepository<Tenant, Long> {
 
     Optional<Tenant> findByTenantUuid(UUID parsedTenantUuid);
     Optional<Tenant> findById(Long tenantId);
+
 }

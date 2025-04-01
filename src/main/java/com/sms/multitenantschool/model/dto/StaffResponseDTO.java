@@ -1,4 +1,4 @@
-package com.sms.multitenantschool.model.DTO;
+package com.sms.multitenantschool.model.dto;
 
 import java.util.UUID;
 

@@ -1,7 +1,7 @@
 package com.sms.multitenantschool.mapper;
 
-import com.sms.multitenantschool.model.DTO.StaffRequestDTO;
-import com.sms.multitenantschool.model.DTO.StaffResponseDTO;
+import com.sms.multitenantschool.model.dto.StaffRequestDTO;
+import com.sms.multitenantschool.model.dto.StaffResponseDTO;
 import com.sms.multitenantschool.model.entity.Staff;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +41,7 @@ public class StaffMapper {
         staff.setEmail(dto.getEmail());
         staff.setPhoneNumber(dto.getPhoneNumber());
         staff.setJobTitle(dto.getJobTitle());
-        staff.setArchived(0); // Default for new staff
+        staff.setArchived(0);
         return staff;
     }
 

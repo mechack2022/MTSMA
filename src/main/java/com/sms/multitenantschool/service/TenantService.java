@@ -1,9 +1,13 @@
 package com.sms.multitenantschool.service;
 
+import com.sms.multitenantschool.Utils.SecurityUtils.SecurityUtil;
+import com.sms.multitenantschool.exceptions.BadRequestException;
 import com.sms.multitenantschool.exceptions.ResourceNotFoundException;
 import com.sms.multitenantschool.model.entity.Tenant;
 import com.sms.multitenantschool.model.entity.TenantSettings;
+import com.sms.multitenantschool.model.entity.User;
 import com.sms.multitenantschool.repository.TenantRepository;
+import com.sms.multitenantschool.security.CustomUserDetailsService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +19,11 @@ import java.util.UUID;
 public class TenantService implements Serializable {
 
     private final TenantRepository tenantRepository;
+    private final CustomUserDetailsService userService;
 
-    public TenantService(TenantRepository tenantRepository){
+    public TenantService(TenantRepository tenantRepository, CustomUserDetailsService userService) {
         this.tenantRepository = tenantRepository;
+        this.userService = userService;
     }
 
     public TenantSettings addTenantSetting(TenantSettings tenantSettings, String tenantUuid) {
@@ -63,5 +69,30 @@ public class TenantService implements Serializable {
         tenantRepository.save(tenant);
     }
 
+    public Tenant getTenant(Long tenantId) {
+        if (tenantId == null) {
+            throw new IllegalArgumentException("tenant Id is required");
+        }
+        return tenantRepository.findById(tenantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Tenant", "id", tenantId));
+    }
 
+    public Tenant getTenantUuid(UUID tenantUuid) {
+        if (tenantUuid == null) {
+            throw new IllegalArgumentException("tenant Id is required");
+        }
+        return tenantRepository.findByTenantUuid(tenantUuid)
+                .orElseThrow(() -> new ResourceNotFoundException("Tenant", "id", tenantUuid));
+    }
+
+    public Tenant getActiveTenant() {
+        Optional<String> currentUser = SecurityUtil.getCurrentLoginTenant();
+        if (currentUser.isEmpty()) {
+            throw new BadRequestException("Login is Required", "User");
+        }
+        String username = currentUser.get();
+        //use the currentLoginTenant to get the ADMIN
+        User admin = userService.getUserByUsername(username);
+        return getTenantUuid(admin.getTenantUuid());
+    }
 }

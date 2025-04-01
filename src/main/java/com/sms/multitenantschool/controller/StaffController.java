@@ -2,12 +2,11 @@ package com.sms.multitenantschool.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sms.multitenantschool.Utils.ValidationUtils;
-import com.sms.multitenantschool.model.DTO.ApiResponse;
-import com.sms.multitenantschool.model.DTO.StaffRequestDTO;
-import com.sms.multitenantschool.model.DTO.StaffResponseDTO;
+import com.sms.multitenantschool.model.dto.ApiResponse;
+import com.sms.multitenantschool.model.dto.StaffRequestDTO;
+import com.sms.multitenantschool.model.dto.StaffResponseDTO;
 import com.sms.multitenantschool.service.serviceImpl.StaffServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -33,7 +32,7 @@ public class StaffController {
         this.objectMapper = objectMapper;
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<StaffResponseDTO>> createStaff(
             @RequestParam Long tenantId,
