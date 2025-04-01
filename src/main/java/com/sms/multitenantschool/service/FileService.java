@@ -15,7 +15,13 @@ public interface FileService {
      * @return The stored file path or URL
      * @throws IOException If upload fails
      */
-    String uploadFile(String entityId, String fileType, MultipartFile file) throws IOException;
+    default String uploadFile(String entityId, String fileType, MultipartFile file) throws IOException {
+        throw new UnsupportedOperationException("Not implemented");
+    };
+
+   default String uploadFile(String fileType, MultipartFile file) throws IOException {
+       throw new UnsupportedOperationException("Not implemented");
+   };
 
     /**
      * Downloads a file as a Resource.
@@ -23,19 +29,26 @@ public interface FileService {
      * @return The file as a Resource
      * @throws IOException If download fails
      */
-    Resource downloadFile(String filePath) throws IOException;
+    default Resource downloadFile(String filePath) throws IOException{
+        throw new UnsupportedOperationException("Not implemented");
+    };
 
     /**
      * Deletes a file.
      * @param filePath The stored path or URL of the file
      * @throws IOException If deletion fails
      */
-    void deleteFile(String filePath) throws IOException;
+    default void deleteFile(String filePath) throws IOException{
+        throw new UnsupportedOperationException("Not implemented");
+    };
 
     /**
      * Generates a unique filename.
      * @param originalFileName The original filename from the uploaded file
      * @return A unique filename
      */
-    String generateUniqueFileName(String originalFileName);
+    default String generateUniqueFileName(String originalFileName){
+        throw new UnsupportedOperationException("Not implemented");
+    }
+    ;
 }

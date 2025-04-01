@@ -16,7 +16,7 @@ public class TenantService implements Serializable {
 
     private final TenantRepository tenantRepository;
 
-    public TenantService(TenantRepository tenantRepository){
+    public TenantService(TenantRepository tenantRepository) {
         this.tenantRepository = tenantRepository;
     }
 
@@ -61,6 +61,22 @@ public class TenantService implements Serializable {
                 .orElseThrow(() -> new ResourceNotFoundException("Tenant", "id", tenantId));
         tenant.setArchived(1);
         tenantRepository.save(tenant);
+    }
+
+    public Tenant getTenant(Long tenantId) {
+        if (tenantId == null) {
+            throw new IllegalArgumentException("tenant Id is required");
+        }
+        return tenantRepository.findById(tenantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Tenant", "id", tenantId));
+    }
+
+    public Tenant getTenantUuid(UUID tenantUuid) {
+        if (tenantUuid== null) {
+            throw new IllegalArgumentException("tenant Id is required");
+        }
+        return tenantRepository.findByTenantUuid(tenantUuid)
+                .orElseThrow(() -> new ResourceNotFoundException("Tenant", "id", tenantUuid));
     }
 
 

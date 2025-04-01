@@ -11,6 +11,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 public final class SecurityUtil {
     private SecurityUtil() {
     }
+    public static Optional<String> getCurrentLoginTenant() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                return Optional.of(((UserDetails) principal).getUsername());
+            } else if (principal instanceof String) {
+                return Optional.of((String) principal);
+            }
+        }
+        return Optional.empty();
+    }
 
     public static Optional<String> getCurrentUserLogin() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -52,4 +66,5 @@ public final class SecurityUtil {
     private static Stream<String> getAuthorities(Authentication authentication) {
         return authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority);
     }
+
 }

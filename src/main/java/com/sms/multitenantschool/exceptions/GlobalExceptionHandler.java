@@ -1,6 +1,6 @@
 package com.sms.multitenantschool.exceptions;
 
-import com.sms.multitenantschool.model.DTO.ApiResponse;
+import com.sms.multitenantschool.model.dto.ApiResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

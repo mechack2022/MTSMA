@@ -1,7 +1,7 @@
 package com.sms.multitenantschool.service;
 
-import com.sms.multitenantschool.model.DTO.LoginDTO;
-import com.sms.multitenantschool.model.DTO.TenantSignUpDTO;
+import com.sms.multitenantschool.model.dto.LoginDTO;
+import com.sms.multitenantschool.model.dto.TenantSignUpDTO;
 import com.sms.multitenantschool.model.entity.Role;
 import com.sms.multitenantschool.model.entity.Tenant;
 import com.sms.multitenantschool.model.entity.User;
@@ -81,6 +81,7 @@ public class AuthServiceImpl implements AuthService {
         // Create Tenant entity
         Tenant tenant = new Tenant();
         tenant.setTenantName(tenantSignUpDTO.getTenantName());
+        tenant.setTenantAbbr(tenantSignUpDTO.getTenantAbbr());
         tenant.setTenantUuid(tenantUuid);
         tenant.setCreatedAt(LocalDateTime.now());
         tenantRepository.save(tenant);

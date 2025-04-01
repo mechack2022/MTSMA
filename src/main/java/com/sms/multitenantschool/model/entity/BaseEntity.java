@@ -62,6 +62,6 @@ public abstract class BaseEntity {
         updatedAt = LocalDateTime.now();
     }
 
-    protected void prePersistCustom() {
+    protected void  prePersistCustom() {
     }
 }

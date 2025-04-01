@@ -17,8 +17,12 @@ public class Tenant extends BaseEntity {
     @Column(name = "tenant_name", nullable = false, unique = true)
     private String tenantName;
 
+    @Column(name = "tenant_abbr", nullable = false, unique = true)
+    private String tenantAbbr;
+
     @Convert(converter = TenantSettingsConverter.class)
     @JdbcTypeCode(SqlTypes.JSON)
+
     @Column(name = "tenant_settings", columnDefinition = "jsonb")
     private TenantSettings settings;
 
@@ -45,6 +49,13 @@ public class Tenant extends BaseEntity {
 
     public void setTenantUuid(UUID tenantUuid) {
         this.tenantUuid = tenantUuid;
+    }
+    public String getTenantAbbr() {
+        return tenantAbbr;
+    }
+
+    public void setTenantAbbr(String tenantAbbr) {
+        this.tenantAbbr = tenantAbbr;
     }
 
     @Override

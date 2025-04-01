@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/mtsmadb2
+    url: jdbc:postgresql://localhost:5432/MTSMA
     username: postgres
     password: mechack200
     driver-class-name: org.postgresql.Driver
@@ -21,13 +21,13 @@ jwt:
 #  swagger-ui:
 #    path: /swagger-ui.html
 # Enable debug mode
-debug: true
+#debug: true
 # Set logging level for different packages (optional)
-logging:
-  level:
-    root: INFO
-    org.springframework: DEBUG
-    com.sms.multitenantschool: DEBUG
+#logging:
+#  level:
+#    root: INFO
+#    org.springframework: DEBUG
+#    com.sms.multitenantschool: DEBUG
 #liquibase:
 #  change-log: classpath:db/db.changelog/db.changelog-master.xml
 #  enabled: true

@@ -1,9 +1,9 @@
 package com.sms.multitenantschool.controller;
 
 import com.sms.multitenantschool.model.AuthResponseDTO;
-import com.sms.multitenantschool.model.DTO.ApiResponse;
-import com.sms.multitenantschool.model.DTO.LoginDTO;
-import com.sms.multitenantschool.model.DTO.TenantSignUpDTO;
+import com.sms.multitenantschool.model.dto.ApiResponse;
+import com.sms.multitenantschool.model.dto.LoginDTO;
+import com.sms.multitenantschool.model.dto.TenantSignUpDTO;
 import com.sms.multitenantschool.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

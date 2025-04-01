@@ -1,4 +1,4 @@
-package com.sms.multitenantschool.model.DTO;
+package com.sms.multitenantschool.model.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

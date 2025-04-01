@@ -1,4 +1,4 @@
-package com.sms.multitenantschool.model.DTO;
+package com.sms.multitenantschool.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

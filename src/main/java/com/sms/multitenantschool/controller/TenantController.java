@@ -1,6 +1,6 @@
 package com.sms.multitenantschool.controller;
 
-import com.sms.multitenantschool.model.DTO.ApiResponse;
+import com.sms.multitenantschool.model.dto.ApiResponse;
 import com.sms.multitenantschool.model.entity.TenantSettings;
 import com.sms.multitenantschool.service.TenantService;
 import org.springframework.http.HttpStatus;

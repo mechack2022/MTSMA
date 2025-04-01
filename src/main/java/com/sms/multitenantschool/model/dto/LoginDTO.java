@@ -1,11 +1,11 @@
-package com.sms.multitenantschool.model.DTO;
+package com.sms.multitenantschool.model.dto;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginDTO {
 
     private String username;
