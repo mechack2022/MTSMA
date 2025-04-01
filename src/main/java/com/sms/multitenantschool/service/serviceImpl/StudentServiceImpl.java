@@ -21,6 +21,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,22 +49,16 @@ public class StudentServiceImpl implements StudentService {
         this.userService = userService;
     }
 
+
     @Transactional
     @Override
     public StudentResponseDTO create(StudentRequestDTO request) {
         if (request == null) {
             throw new IllegalArgumentException("Request cannot be null");
         }
-        Optional<String> currentUser = SecurityUtil.getCurrentLoginTenant();
-        if(currentUser.isEmpty()){
-            throw new BadRequestException("Login is Required", "User");
-        }
-        String username = currentUser.get();
-        //use the currentLoginTenant to get the ADMIN
-        User admin = userService.getUserByUsername(username);
-        Tenant tenant = tenantService.getTenantUuid(admin.getTenantUuid());
-        if(tenant == null){
-            throw new ResourceNotFoundException("Tenant", "Tenant not found", username);
+        Tenant tenant = tenantService.getActiveTenant();
+        if (tenant == null) {
+            throw new ResourceNotFoundException("Tenant", "Tenant not found", null);
         }
         // Get the username safely
         studentRepository.findByEmail(request.getEmail())
@@ -76,7 +71,7 @@ public class StudentServiceImpl implements StudentService {
                 request.getMiddleName(), request.getLastName()
         );
         Guardian guardian = handleGuardian(request.getGuardian());
-        Student newStudent = studentMapper.toEntity(request, tenant, guardian );
+        Student newStudent = studentMapper.toEntity(request, tenant, guardian);
         newStudent.setStudentIdNumber(studentIdNumber);
         newStudent.setTenant(tenant);
         newStudent.setGuardian(guardian);
@@ -104,4 +99,11 @@ public class StudentServiceImpl implements StudentService {
         return guardianService.getGuardianByEmail(guardianRequest.getEmail())
                 .orElseGet(() -> guardianService.save(guardianRequest));
     }
+
+    public List<StudentResponseDTO> getAllStudentsInATenant() {
+        Tenant tenant = tenantService.getActiveTenant();
+        List<Student> students = studentRepository.findAllByTenantId(tenant.getId());
+        return studentMapper.toResponseDTOList(students);
+    }
+
 }
