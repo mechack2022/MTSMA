@@ -6,32 +6,33 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "timetable_entries", schema = "public")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
+@Table(name = "timetable_entries", schema = "public",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"period_id", "day", "room_id", "teacher_id", "school_year", "term"}))
 public class TimeTableEntry extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "class_id", nullable = false)
     private Clazz classEntity;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "period_id", nullable = false)
     private Period period;
 
     @Column(nullable = false)
@@ -42,4 +43,5 @@ public class TimeTableEntry extends BaseEntity {
 
     @Column(nullable = false)
     private String term; // e.g., "Term 1"
+
 }

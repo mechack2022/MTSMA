@@ -2,16 +2,14 @@ package com.sms.multitenantschool.model.entity.timeTable;
 
 import com.sms.multitenantschool.model.entity.BaseEntity;
 import com.sms.multitenantschool.model.entity.Teacher;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Table(name = "subjects", schema = "public")
+@Table(name = "subjects", schema = "public",
+                uniqueConstraints = @UniqueConstraint(columnNames = {"subject_name", "year_level"}))
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

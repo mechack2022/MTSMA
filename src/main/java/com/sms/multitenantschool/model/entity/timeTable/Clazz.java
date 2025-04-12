@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "clazzes", schema = "public")
+@Table(name = "clazzes", schema = "public",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"class_name", "year_level", "academic_year", "section"}))
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +20,7 @@ public class Clazz extends BaseEntity {
     @Column(name = "clazz_uuid", nullable = false, unique = true, updatable = false)
     private UUID classUuid;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String className;
 
     @Column(nullable = false)
@@ -35,8 +36,8 @@ public class Clazz extends BaseEntity {
     @ManyToMany
     @JoinTable(
             name = "clazz_subjects",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id")
+            joinColumns = @JoinColumn( name = "clasz_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id", referencedColumnName = "id")
     )
     private List<Subject> subjects;
 
@@ -46,8 +47,9 @@ public class Clazz extends BaseEntity {
     @Column(name = "section")
     private String section;
 
-    @Column(name = "room_number")
-    private String roomNumber;
+    @ManyToOne
+    @JoinColumn(name = "room_number", referencedColumnName = "roomNumber", nullable = false)
+    private Room room;
 
     @Column(name = "is_active")
     private Boolean isActive = true;

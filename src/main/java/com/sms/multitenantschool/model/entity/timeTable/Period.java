@@ -28,4 +28,7 @@ public class Period extends BaseEntity {
     @Column(nullable= false, name= "end_time")
     private LocalTime endTime;
 
+    @Column(name = "day_of_week")
+    private Integer dayOfWeek;
+
 }

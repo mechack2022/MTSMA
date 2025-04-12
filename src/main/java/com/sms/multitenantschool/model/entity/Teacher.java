@@ -24,8 +24,8 @@ public class Teacher extends BaseEntity {
     @ManyToMany
     @JoinTable(
             name = "teacher_subjects",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id")
+            joinColumns = @JoinColumn(name = "teacher_id", referencedColumnName = "id"),           // FK to Teacher(id)
+            inverseJoinColumns = @JoinColumn(name = "subject_id", referencedColumnName = "id")     // FK to Subject(id)
     )
     private List<Subject> subjectsTaught;
 

@@ -15,12 +15,10 @@ import lombok.*;
 @Getter
 public class Room extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String roomNumber;
 
     @Column(nullable = false)
     private Integer capacity;
 
-    @Column(nullable = false)
-    private String type;
 }
