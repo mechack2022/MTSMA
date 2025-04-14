@@ -5,6 +5,7 @@ import com.sms.multitenantschool.model.entity.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,13 +33,11 @@ public class Subject extends BaseEntity {
     @Column(name = "credits")
     private Integer credits;
 
-    @ManyToMany(mappedBy = "subjectsTaught")
-    private List<Teacher> teachers;
-
-    @ManyToMany(mappedBy = "subjects")
-    private List<Clazz> classes;
-
     @Column(name = "is_elective")
     private Boolean isElective = false;
 
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
+    private List<ClazzSubjectTeacher> classAssignments = new ArrayList<>();
 }
+
+

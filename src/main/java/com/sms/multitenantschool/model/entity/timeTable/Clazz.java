@@ -5,6 +5,7 @@ import com.sms.multitenantschool.model.entity.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,14 +34,6 @@ public class Clazz extends BaseEntity {
     @JoinColumn(name = "class_teacher_id")
     private Teacher classTeacher;
 
-    @ManyToMany
-    @JoinTable(
-            name = "clazz_subjects",
-            joinColumns = @JoinColumn( name = "clasz_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "subject_id", referencedColumnName = "id")
-    )
-    private List<Subject> subjects;
-
     @Column(name = "academic_year")
     private String academicYear;
 
@@ -53,5 +46,8 @@ public class Clazz extends BaseEntity {
 
     @Column(name = "is_active")
     private Boolean isActive = true;
+
+    @OneToMany(mappedBy = "clazz", cascade = CascadeType.ALL)
+    private List<ClazzSubjectTeacher> subjectAssignments = new ArrayList<>();
 
 }
