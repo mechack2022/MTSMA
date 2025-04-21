@@ -1,22 +1,26 @@
 package com.sms.multitenantschool.model.entity.timeTable;
 
 import com.sms.multitenantschool.model.entity.BaseEntity;
-import com.sms.multitenantschool.model.entity.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "subjects", schema = "public",
-                uniqueConstraints = @UniqueConstraint(columnNames = {"subject_name", "year_level"}))
-@Builder
+        uniqueConstraints = @UniqueConstraint(columnNames = {"subject_name", "year_level"}))
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 public class Subject extends BaseEntity {
+
+    @Column(name = "tenant_uuid", nullable = false)
+    private UUID tenantUuid;
 
     @Column(nullable = false)
     private String subjectName;
