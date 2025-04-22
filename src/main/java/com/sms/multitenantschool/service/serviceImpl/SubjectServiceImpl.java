@@ -13,9 +13,11 @@ import com.sms.multitenantschool.service.SubjectService;
 import com.sms.multitenantschool.service.TenantService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,34 +37,40 @@ public class SubjectServiceImpl implements SubjectService {
         if (tenant == null) {
             throw new ResourceNotFoundException("Tenant", "Tenant not found", null);
         }
+        UUID tenantUuid = tenant.getTenantUuid();
         // Validate and map DTOs to entities
         List<Subject> subjects = requestDTOs.stream()
                 .map(requestDTO -> {
                     // Check for unique constraints
-                    if (subjectRepository.existsBySubjectNameAndYearLevel(
-                            requestDTO.getSubjectName(), requestDTO.getYearLevel())) {
+                    if (subjectRepository.existsBySubjectNameAndYearLevelAndTenantUuid(
+                            requestDTO.getSubjectName().trim(),
+                            requestDTO.getYearLevel().trim(),
+                            tenantUuid)) {
                         throw new BadRequestException("Subject",
-                                "Subject with name " + requestDTO.getSubjectName() +
-                                        " and year level " + requestDTO.getYearLevel() + " already exists");
+                                "A subject with name '" + requestDTO.getSubjectName() +
+                                        "' and year level '" + requestDTO.getYearLevel() + "' already exists for this tenant");
                     }
-                    if (subjectRepository.existsBySubjectCode(requestDTO.getSubjectCode())) {
+                    if (subjectRepository.existsBySubjectCodeAndTenantUuid(requestDTO.getSubjectCode(), tenantUuid)) {
                         throw new BadRequestException("Subject",
-                                "Subject code " + requestDTO.getSubjectCode() + " already exists");
+                                "Subject code '" + requestDTO.getSubjectCode() + "' already exists for this tenant");
                     }
                     // Map DTO to entity
                     Subject subject = subjectMapper.toEntity(requestDTO);
-                    // Set tenantUuid from the Tenant
                     subject.setTenantUuid(tenant.getTenantUuid());
                     subject.setArchived(0);
                     return subject;
                 })
                 .collect(Collectors.toList());
         // Save all subjects
-        List<Subject> savedSubjects = subjectRepository.saveAll(subjects);
-        // Map saved entities to ResponseDTOs
-        return savedSubjects.stream()
-                .map(subjectMapper::toResponseDTO)
-                .collect(Collectors.toList());
+        try {
+            List<Subject> savedSubjects = subjectRepository.saveAll(subjects);
+            return savedSubjects.stream()
+                    .map(subjectMapper::toResponseDTO)
+                    .collect(Collectors.toList());
+        } catch (DataIntegrityViolationException ex) {
+            throw new BadRequestException("Subject",
+                    "A subject with name '" + requestDTOs.get(0).getSubjectName() +
+                            "' and year level '" + requestDTOs.get(0).getYearLevel() + "' already exists for this tenant");
+        }
     }
-
 }

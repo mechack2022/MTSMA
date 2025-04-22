@@ -11,13 +11,18 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "subjects", schema = "public",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"subject_name", "year_level"}))
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_subjects_name_year_tenant",
+                        columnNames = {"subject_name", "year_level", "tenant_uuid"}),
+                @UniqueConstraint(name = "uk_subjects_code_tenant",
+                        columnNames = {"subject_code", "tenant_uuid"})
+        })
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-public class Subject extends BaseEntity {
+public class    Subject extends BaseEntity {
 
     @Column(name = "tenant_uuid", nullable = false)
     private UUID tenantUuid;
@@ -28,7 +33,7 @@ public class Subject extends BaseEntity {
     @Column(nullable = false)
     private String yearLevel;
 
-    @Column(name = "subject_code", nullable = false, unique = true)
+    @Column(name = "subject_code", nullable = false)
     private String subjectCode;
 
     @Column(name = "description")
