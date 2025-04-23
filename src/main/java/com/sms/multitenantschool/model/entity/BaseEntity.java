@@ -1,9 +1,18 @@
 package com.sms.multitenantschool.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+
 import java.time.LocalDateTime;
 
 @MappedSuperclass
+@Getter
+@Setter
+@SuperBuilder
+@NoArgsConstructor
 public abstract class BaseEntity {
 
     @Id
@@ -54,6 +63,9 @@ public abstract class BaseEntity {
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+        if (archived == null) { // Ensure archived is never null
+            archived = 0;
+        }
         prePersistCustom();
     }
 
@@ -62,6 +74,6 @@ public abstract class BaseEntity {
         updatedAt = LocalDateTime.now();
     }
 
-    protected void  prePersistCustom() {
+    protected void prePersistCustom() {
     }
 }

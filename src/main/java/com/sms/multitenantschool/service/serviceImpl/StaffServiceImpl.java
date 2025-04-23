@@ -43,11 +43,10 @@ public class StaffServiceImpl {
         Tenant tenant = tenantRepository.findById(tenantId)
                 .orElseThrow(() -> new ResourceNotFoundException("Tenant", "id", tenantId));
         // Check if staff with the same email already exists
-        Optional<Staff> existingStaff = staffRepository.findByEmail(staffRequestDto.getEmail());
-        if (existingStaff.isPresent()) {
+        Staff existingStaff = getByEmail(staffRequestDto.getEmail());
+        if (existingStaff != null)  {
             throw new BadRequestException("email", "A staff member with this email already exists");
         }
-
         Staff staff = staffMapper.toEntity(staffRequestDto);
         staff.setTenantUuid(tenant.getTenantUuid());
         Staff savedStaff = staffRepository.save(staff);
@@ -179,5 +178,10 @@ public class StaffServiceImpl {
         return "Staff archived successfully";
     }
 
-
+    public Staff getByEmail(String email) {
+        if (email == null) {
+            throw new IllegalArgumentException("Staff Email cannot be null");
+        }
+        return staffRepository.findByEmail(email);
+    }
 }

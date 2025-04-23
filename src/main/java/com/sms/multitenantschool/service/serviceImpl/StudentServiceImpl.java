@@ -11,7 +11,6 @@ import com.sms.multitenantschool.model.dto.StudentResponseDTO;
 import com.sms.multitenantschool.model.entity.Guardian;
 import com.sms.multitenantschool.model.entity.Student;
 import com.sms.multitenantschool.model.entity.Tenant;
-import com.sms.multitenantschool.model.entity.User;
 import com.sms.multitenantschool.repository.StudentRepository;
 import com.sms.multitenantschool.security.CustomUserDetailsService;
 import com.sms.multitenantschool.service.FileService;
@@ -34,7 +33,6 @@ public class StudentServiceImpl implements StudentService {
     private final GuardianServiceImpl guardianService;
     private final FileService fileService;
     private final StudentMapper studentMapper;
-    private final CustomUserDetailsService userService;
 
     public StudentServiceImpl(StudentRepository studentRepository, TenantService tenantService,
                               GuardianServiceImpl guardianService, FileService fileService,
@@ -46,7 +44,6 @@ public class StudentServiceImpl implements StudentService {
         this.guardianService = guardianService;
         this.fileService = fileService;
         this.studentMapper = studentMapper;
-        this.userService = userService;
     }
 
 

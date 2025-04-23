@@ -28,5 +28,7 @@ public class CommonUtils {
         return tenantAbbr.toUpperCase() + "-" + firstInitial + middleInitial + lastInitial + "-" + uniqueSuffix;
     }
 
+    // USE THIS FORMAT
+//    public static  generatePeriodId()
 
 }
