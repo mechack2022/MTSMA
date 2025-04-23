@@ -13,19 +13,34 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
 public class ClazzSubjectTeacherPeriod extends BaseEntity {
 
-    @ManyToOne
+//    @ManyToOne
+//    @JoinColumn(name = "clazz_subject_teacher_id", nullable = false)
+//    private ClazzSubjectTeacher clazzSubjectTeacher;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "period_id", nullable = false)
+//    private Period period;
+//
+//    public ClazzSubjectTeacherPeriod(ClazzSubjectTeacher cst, Period period) {
+//        this.clazzSubjectTeacher = cst;
+//        this.period = period;
+//    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "clazz_subject_teacher_id", nullable = false)
     private ClazzSubjectTeacher clazzSubjectTeacher;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "period_id", nullable = false)
     private Period period;
 
-    public ClazzSubjectTeacherPeriod(ClazzSubjectTeacher cst, Period period) {
-        this.clazzSubjectTeacher = cst;
-        this.period = period;
+    @Column(name = "tenant_uuid", nullable = false)
+    private String tenantUuid;
+
+    public ClazzSubjectTeacherPeriod(ClazzSubjectTeacher clazzSubjectTeacher, Period period) {
     }
 }
 

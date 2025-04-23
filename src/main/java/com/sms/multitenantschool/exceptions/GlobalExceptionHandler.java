@@ -1,6 +1,7 @@
 package com.sms.multitenantschool.exceptions;
 
 import com.sms.multitenantschool.model.dto.ApiResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
@@ -32,7 +34,10 @@ public class GlobalExceptionHandler {
                 "A subject with the provided name and year level already exists for this tenant");
         CONSTRAINT_MESSAGES.put("subjects_subject_code_key",
                 "Subject code is already in use for this tenant");
+        CONSTRAINT_MESSAGES.put("uk_teacher_teachers_id_tenant", "Teacher ID is already in use for this tenant");
+        CONSTRAINT_MESSAGES.put("uk_teachers_staff_email_tenant", "Email is already in use for this tenant");
     }
+
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<ApiResponse<Object>> handleGlobalException(Exception ex) {
@@ -126,4 +131,25 @@ public class GlobalExceptionHandler {
                         details
                 ));
     }
+
+//    @ExceptionHandler(DataIntegrityViolationException.class)
+//    public ResponseEntity<ApiResponse<Object>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+//        log.error("Data integrity violation: {}", ex.getMessage(), ex);
+//        String message = "Failed to create resource due to a data integrity issue";
+//        if (ex.getCause() instanceof org.hibernate.exception.ConstraintViolationException constraintEx) {
+//            String constraintName = constraintEx.getConstraintName();
+//            message = CONSTRAINT_MESSAGES.getOrDefault(constraintName, message);
+//        }
+//        return ResponseEntity
+//                .status(HttpStatus.BAD_REQUEST)
+//                .body(new ApiResponse<>(message, ex.getMessage()));
+//    }
+//
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ApiResponse<Object>> handleGenericException(Exception ex) {
+//        log.error("Unexpected error: {}", ex.getMessage(), ex);
+//        return ResponseEntity
+//                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                .body(new ApiResponse<>("An unexpected error occurred", ex.getMessage()));
+//    }
 }

@@ -4,28 +4,31 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sms.multitenantschool.model.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
-@Table(name = "periods", schema = "public")
-@Builder
+@Table(name = "periods", schema = "public",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_periods_day_time_tenant",
+                        columnNames = {"day_of_week", "start_time", "tenant_uuid"})
+        })
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 public class Period extends BaseEntity {
 
-    @Column(name = "period_uuid", nullable = false, unique = true, updatable = false)
+    @Column(name = "period_uuid", nullable = false)
     private UUID periodUuid;
 
-    @Column(name = "period_id", nullable = false, unique = true, updatable = false)
+    @Column(name = "period_id", nullable = false)
     private String periodId;
 
-    @Column(name = "tenant_uuid", nullable = false, unique = true, updatable = false)
+    @Column(name = "tenant_uuid", nullable = false)
     private UUID tenantUuid  ;
 
     @Column(nullable= false, name= "start_time")
@@ -38,7 +41,6 @@ public class Period extends BaseEntity {
     private Integer dayOfWeek;
 
     @OneToMany(mappedBy = "period")
-    @JsonIgnore
-    private Set<ClazzSubjectTeacherPeriod> clazzSubjectTeacherPeriods = new HashSet<>();
+    private List<ClazzSubjectTeacherPeriod> periodAssignments = new ArrayList<>();
 
 }

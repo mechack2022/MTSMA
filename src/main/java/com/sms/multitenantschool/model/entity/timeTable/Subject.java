@@ -45,7 +45,7 @@ public class    Subject extends BaseEntity {
     @Column(name = "is_elective")
     private Boolean isElective = false;
 
-    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClazzSubjectTeacher> classAssignments = new ArrayList<>();
 }
 
